@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Iceberg&display=swap");
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  font-family: "Iceberg", serif;
+}
+:root {
+  /* light theme (Bootstrap defaults, tweak as you like) */
+  --bs-body-bg: #ffffff;
+  --bs-body-color: #0f172a; /* slate-900 */
+  --bs-border-color: #e5e7eb; /* gray-200 */
+  --bs-primary: #0d6efd; /* default Bootstrap primary */
+  --bs-secondary: #6c757d;
+  --bs-link-color: #0d6efd;
+}
+
+/* When Tailwind adds .dark to <html>, override Bootstrap vars */
+.dark {
+  --bs-body-bg: #0f172a; /* slate-900 */
+  --bs-body-color: #e2e8f0; /* slate-200 */
+  --bs-border-color: #334155; /* slate-700 */
+  --bs-primary: #38bdf8; /* sky-400 */
+  --bs-secondary: #94a3b8; /* slate-400 */
+  --bs-link-color: #38bdf8;
+}
+
+/* Optional helpers to match Bootstrap components */
+.dark .card,
+.dark .modal-content,
+.dark .dropdown-menu,
+.dark .offcanvas,
+.dark .list-group,
+.dark .toast {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  border-color: var(--bs-border-color);
+}
+
+.dark .navbar,
+.dark .offcanvas-header,
+.dark .modal-header,
+.dark .modal-footer {
+  border-color: var(--bs-border-color);
+}
