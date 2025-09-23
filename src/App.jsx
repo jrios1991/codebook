@@ -17,29 +17,9 @@ function ThemeToggle() {
 function App() {
   return (
     <div>
+      <ThemeToggle />
       <Header />
-      <div className="min-h-screen">
-        <nav className="navbar navbar-expand-lg border-bottom">
-          <div className="container-fluid">
-            <a className="navbar-brand" href="#">
-              Codebook
-            </a>
-            <button className="btn btn-primary">Bootstrap Button</button>
-          </div>
-        </nav>
 
-        <div className="container py-4">
-          <div className="card mb-3">
-            <div className="card-body">
-              <h5 className="card-title">Bootstrap + Tailwind dark mode</h5>
-              <p className="card-text">
-                Toggle the site theme to see Bootstrap restyle automatically.
-              </p>
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </div>
       <AllRoutes />
       <Footer />
     </div>
