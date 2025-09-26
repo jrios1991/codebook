@@ -6,7 +6,7 @@ export const Header = () => {
       <nav className="dark:bg-gray-900">
         <div className="border-b border-slate-200 dark:border-b-0 flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-3">
           <Link
-            href="/"
+            to="/"
             className="flex items-center"
             style={{ textDecoration: "none" }}
           >

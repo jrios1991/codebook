@@ -15,6 +15,13 @@ function ThemeToggle() {
   );
 }
 function App() {
+  console.table({
+    endpoint: import.meta.env.VITE_APPWRITE_ENDPOINT,
+    project: import.meta.env.VITE_APPWRITE_PROJECT_ID,
+    db: import.meta.env.VITE_APPWRITE_DATABASE_ID,
+    table: import.meta.env.VITE_APPWRITE_PRODUCTS_TABLE_ID,
+  });
+
   return (
     <div>
       <ThemeToggle />
