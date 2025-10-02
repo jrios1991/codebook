@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
-export const ProductCard = () => {
+
+const PLACEHOLDER = "https://placehold.co/400x256?text=No+Image";
+export const ProductCard = ({ product }) => {
+  if (!product) return null; // defensive guard
+
+  const { name, overview, poster, price } = product;
+  const imgSrc = poster && /^https?:\/\//i.test(poster) ? poster : PLACEHOLDER;
+
   return (
     <div className="m-3 max-w-sm rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
       <Link to="/" className="relative" style={{ textDecoration: "none" }}>
@@ -7,40 +14,30 @@ export const ProductCard = () => {
           Best Seller
         </span>
         <img
-          className="rounded-t-lg w-full h-64"
-          src="https://zetlly.com/wp-content/uploads/2025/06/designing-data-intensive-applications-the-big-ideas-behind-reliable-scalable-and-maintainable-systems-jaxky.jpg"
-          alt=""
+          className="rounded-t-lg w-full h-64 object-cover"
+          src={imgSrc}
+          alt={name}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = PLACEHOLDER;
+          }}
         />
       </Link>
+
       <div className="p-5">
         <Link to="/" style={{ textDecoration: "none" }}>
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            The Complete Guide to Backend Development
+            {name}
           </h5>
         </Link>
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Error unde
-          quisquam magni vel eligendi nam.
-        </p>
-
-        <div className="flex items-center my-2">
-          <i className="text-lg bi bi-star-fill text-yellow-500 mr-1"></i>
-          <i className="text-lg bi bi-star-fill text-yellow-500 mr-1"></i>
-          <i className="text-lg bi bi-star-fill text-yellow-500 mr-1"></i>
-          <i className="text-lg bi bi-star-fill text-yellow-500 mr-1"></i>
-          <i className="text-lg bi bi-star text-yellow-500 mr-1"></i>
-        </div>
-
-        <p className="flex justify-between items-center">
-          <span className="text-2xl dark:text-gray-200">
-            <span>$</span>
-            <span>29</span>
-          </span>
-          <button className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800">
-            Add To Cart <i className="ml-1 bi bi-plus-lg"></i>
-          </button>
-          {/* <button className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800">Remove Item <i className="ml-1 bi bi-trash3"></i></button> */}
-        </p>
+        {overview && (
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            {overview}
+          </p>
+        )}
+        {typeof price !== "undefined" && (
+          <div className="font-semibold">${Number(price).toFixed(2)}</div>
+        )}
       </div>
     </div>
   );

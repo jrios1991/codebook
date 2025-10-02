@@ -3,6 +3,7 @@ import { ProductCard } from "../../components/Elements/ProductCard";
 import { FilterBar } from "./components/FilterBar";
 import ProductList from "./components/ProductList";
 import { useProducts } from "../Products/components/useProducts";
+import { FeaturedProducts } from "../Home/components/FeaturedProducts";
 
 export const Products = () => {
   const [show, setShow] = useState(false);
@@ -10,12 +11,6 @@ export const Products = () => {
 
   if (loading) return <p>Loading…</p>;
   if (error) return <p>Something went wrong.</p>;
-  console.table({
-    endpoint: import.meta.env.VITE_APPWRITE_ENDPOINT,
-    project: import.meta.env.VITE_APPWRITE_PROJECT_ID,
-    db: import.meta.env.VITE_APPWRITE_DATABASE_ID,
-    table: import.meta.env.VITE_APPWRITE_PRODUCTS_TABLE_ID,
-  });
 
   return (
     <main>
@@ -45,12 +40,11 @@ export const Products = () => {
           </span>
         </div>
 
-        <div className="flex flex-wrap justify-center lg:flex-row">
-          <ProductCard />
-        </div>
+        <div className="flex flex-wrap justify-center lg:flex-row"></div>
+        <FeaturedProducts />
         {show && <FilterBar setShow={setShow} />}
       </section>
-      <ProductList items={items} />
+      <ProductList items={items} key={items.$id} />
     </main>
   );
 };
