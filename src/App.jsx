@@ -19,7 +19,6 @@ function App() {
     <div>
       <ThemeToggle />
       <Header />
-
       <AllRoutes />
       <Footer />
     </div>

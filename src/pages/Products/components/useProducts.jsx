@@ -5,8 +5,14 @@ import {
   deleteProduct,
   updateProduct,
 } from "../../../appwrite/products.service";
+import {
+  ensureAnonymousSession,
+  tables, // from client.js
+  DATABASE_ID,
+  PRODUCTS_TABLE_ID,
+} from "../../../appwrite/client";
 
-export function useProducts() {
+export function useProducts(id) {
   const [items, setItems] = useState([]); // rows, not documents
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,6 +48,38 @@ export function useProducts() {
     await deleteProduct(id);
     setItems((prev) => prev.filter((it) => it.$id !== id));
   }, []);
+  useEffect(() => {
+    if (!id) return;
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        await ensureAnonymousSession();
+        // Tables API
+        if (typeof tables.getRow === "function") {
+          const row = await tables.getRow({
+            databaseId: DATABASE_ID,
+            tableId: PRODUCTS_TABLE_ID,
+            rowId: id,
+          });
+          setItems(row);
+        } else {
+          // Fallback if you still use Databases
+          const { databases } = await import("../../../appwrite/client");
+          const doc = await databases.getDocument(
+            DATABASE_ID,
+            PRODUCTS_TABLE_ID,
+            id
+          );
+          setItems(doc);
+        }
+      } catch (e) {
+        setError(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [id]);
 
   return { items, loading, error, refresh, add, patch, remove };
 }

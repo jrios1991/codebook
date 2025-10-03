@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { ProductCard } from "../../components/Elements/ProductCard";
 import { FilterBar } from "./components/FilterBar";
 import ProductList from "./components/ProductList";
 import { useProducts } from "../Products/components/useProducts";
-import { FeaturedProducts } from "../Home/components/FeaturedProducts";
 
 export const Products = () => {
   const [show, setShow] = useState(false);
@@ -14,10 +12,10 @@ export const Products = () => {
 
   return (
     <main>
-      <section className="my-5">
+      <section className="my-4">
         <div className="my-5 flex justify-between">
           <span className="text-2xl font-semibold dark:text-slate-100 mb-5">
-            All eBooks (15)
+            All eBooks ({items.length})
           </span>
           <span>
             <button
@@ -41,10 +39,9 @@ export const Products = () => {
         </div>
 
         <div className="flex flex-wrap justify-center lg:flex-row"></div>
-        <FeaturedProducts />
         {show && <FilterBar setShow={setShow} />}
       </section>
-      <ProductList items={items} key={items.$id} />
+      <ProductList products={items} key={items.$id} />
     </main>
   );
 };

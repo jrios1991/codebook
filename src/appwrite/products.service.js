@@ -29,7 +29,17 @@ export async function createProduct(input) {
 
   return res;
 }
-
+export async function getProductById(id) {
+  // returns the document or throws if not found
+  return tables.getDocument(DATABASE_ID, PRODUCTS_TABLE_ID, id);
+}
+export async function getProductBySlug(slug) {
+  const res = await tables.listDocuments(DATABASE_ID, PRODUCTS_TABLE_ID, [
+    Query.equal("slug", slug),
+    Query.limit(1),
+  ]);
+  return res.documents[0] || null;
+}
 // Update row
 export async function updateProduct(id, patch) {
   const res = await tables.updateRow({

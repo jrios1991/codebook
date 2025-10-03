@@ -1,5 +1,5 @@
 import React from "react";
-import { ProductCard } from "../../../components/Elements/ProductCard";
+import { ProductCard } from "../../../components/";
 import { useProducts } from "../../Products/components/useProducts";
 
 // put your 3 featured IDs here

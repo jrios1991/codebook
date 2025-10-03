@@ -1,4 +1,4 @@
-import { Client, TablesDB } from "appwrite";
+import { Client, TablesDB, Account } from "appwrite";
 
 const client = new Client()
   .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT)
@@ -17,4 +17,13 @@ if (!PRODUCTS_TABLE_ID) {
   console.error(
     "Missing table id: set VITE_APPWRITE_PRODUCTS_TABLE_ID in .env"
   );
+}
+export const account = new Account(client);
+
+export async function ensureAnonymousSession() {
+  try {
+    await account.get(); // already authenticated?
+  } catch {
+    await account.createAnonymousSession();
+  }
 }
