@@ -18,8 +18,17 @@ export const ProductDetail = () => {
     );
   if (!product) return <div className="p-6">Not found.</div>;
 
-  const { name, poster, overview, long_description, price, in_stock, rating } =
-    product;
+  const {
+    name,
+    poster,
+    overview,
+    long_description,
+    price,
+    in_stock,
+    rating,
+    best_seller,
+    size,
+  } = product;
   const imgSrc = poster && /^https?:\/\//i.test(poster) ? poster : PLACEHOLDER;
 
   return (
@@ -39,7 +48,7 @@ export const ProductDetail = () => {
             e.currentTarget.src = PLACEHOLDER;
           }}
         />
-        <div>
+        <div className="mt-5">
           <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-slate-200">
             {name}
           </h1>
@@ -62,9 +71,11 @@ export const ProductDetail = () => {
           <div className="max-w-xl my-3">
             <p className="my-3"></p>
             <p className="my-4 select-none">
-              <span className="font-semibold text-amber-500 border bg-amber-50 rounded-lg px-3 py-1 mr-2">
-                BEST SELLER
-              </span>
+              {best_seller && (
+                <span className="font-semibold text-amber-500 border bg-amber-50 rounded-lg px-3 py-1 mr-2">
+                  BEST SELLER
+                </span>
+              )}
               {in_stock ? (
                 <span className="font-semibold text-emerald-600	border bg-slate-100 rounded-lg px-3 py-1 mr-2">
                   INSTOCK
@@ -76,7 +87,7 @@ export const ProductDetail = () => {
               )}
 
               <span className="font-semibold text-blue-500 border bg-slate-100 rounded-lg px-3 py-1 mr-2">
-                5 MB
+                {size} MB
               </span>
             </p>
             <p className="my-3">
