@@ -1,11 +1,44 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { FilterBar } from "./components/FilterBar";
 import ProductList from "./components/ProductList";
-import { useProducts } from "../Products/components/useProducts";
+import { useSearchParams } from "react-router-dom";
+import { searchProducts } from "../../appwrite/products.service";
 
 export const Products = () => {
   const [show, setShow] = useState(false);
-  const { items, loading, error } = useProducts();
+  // const { items, loading, error } = useProducts();
+  const [params] = useSearchParams();
+  const q = (params.get("q") || "").trim();
+
+  // you can make these stateful if you add pagination later
+  const limit = 30;
+  const offset = 0;
+
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // optional: memoize the request args so useEffect deps are simple
+  const req = useMemo(() => ({ q, limit, offset }), [q, limit, offset]);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const rows = await searchProducts(req); // ← your function
+        if (alive) setItems(rows || []);
+      } catch (e) {
+        if (alive) setError(e);
+      } finally {
+        if (alive) setLoading(false);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [req]);
 
   if (loading) return <p>Loading…</p>;
   if (error) return <p>Something went wrong.</p>;
@@ -15,7 +48,7 @@ export const Products = () => {
       <section className="my-4">
         <div className="my-5 flex justify-between">
           <span className="text-2xl font-semibold dark:text-slate-100 mb-5">
-            All eBooks ({items.length})
+            {q ? <>Results for “{q}”</> : `All eBooks (${items.length})`}
           </span>
           <span>
             <button
@@ -41,7 +74,11 @@ export const Products = () => {
         <div className="flex flex-wrap justify-center lg:flex-row"></div>
         {show && <FilterBar setShow={setShow} />}
       </section>
-      <ProductList products={items} key={items.$id} />
+      {items.length === 0 ? (
+        <p className="text-gray-500">No results found.</p>
+      ) : (
+        <ProductList products={items} />
+      )}
     </main>
   );
 };

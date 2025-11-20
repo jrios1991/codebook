@@ -11,7 +11,6 @@ import {
   DATABASE_ID,
   PRODUCTS_TABLE_ID,
 } from "../../../appwrite/client";
-
 export function useProducts(id) {
   const [items, setItems] = useState([]); // rows, not documents
   const [loading, setLoading] = useState(true);
@@ -48,6 +47,7 @@ export function useProducts(id) {
     await deleteProduct(id);
     setItems((prev) => prev.filter((it) => it.$id !== id));
   }, []);
+
   useEffect(() => {
     if (!id) return;
     (async () => {
